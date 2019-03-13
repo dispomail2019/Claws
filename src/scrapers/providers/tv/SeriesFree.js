@@ -13,9 +13,13 @@ module.exports = class extends BaseProvider {
     async scrape(url, req, ws) {
         const clientIp = this._getClientIp(req);
         const showTitle = req.query.title;
-        const { season, episode, year } = req.query;
-        const userAgent = randomUseragent.getRandom();
-        const resolvePromises = [];
+        const { season, episode, year, type } = req.query;
+        let resolvePromises = [];
+        const headers = {
+            'user-agent': this.userAgent,
+            'x-real-ip': this.clientIp,
+            'x-forwarded-for': this.clientIp
+        };
 
         try {
             const rp = this._getRequest(req, ws);

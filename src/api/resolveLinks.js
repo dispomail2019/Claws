@@ -2,7 +2,9 @@
 
 // Load providers
 const providers = require('../scrapers/providers');
-
+const logger = require('../utils/logger');
+const db = require('../db/db');
+const Cache = require('../db/models/cache');
 const BaseProvider = require('../scrapers/providers/BaseProvider');
 
 /**
@@ -21,6 +23,7 @@ const resolveLinks = async (searchData, ws, req) => {
     const type = searchData.type;
     const sse = {
         send: (resultData) => {
+            saveToCache(req, resultData);
             try {
                 ws.send(JSON.stringify(resultData));
             } catch (err) {
@@ -29,7 +32,7 @@ const resolveLinks = async (searchData, ws, req) => {
         },
         stopExecution: false
     };
-
+ 
     sendInitialStatus(sse);
 
     ws.on('close', () => {
@@ -57,5 +60,43 @@ const resolveLinks = async (searchData, ws, req) => {
 
     sse.send({event: 'done'}, 'done');
 };
+
+const saveToCache = async(req, data) => {
+    if (data) {
+        let link;
+        if (data.event === 'scrape'){
+            link = {
+                uri: data.target,
+                type: req.query.type,
+                metadata: {
+                    title: req.query.title,
+                    year: req.query.year,
+                    episode: req.query.episode,
+                    season: req.query.season,
+                    provider: data.source,
+                }
+            }
+        } else {
+            link = {
+                uri: data.file.data,
+                type: req.query.type,
+                metadata: {
+                    title: req.query.title,
+                    year: req.query.year,
+                    episode: req.query.episode,
+                    season: req.query.season,
+                    provider: data.metadata.provider,
+                    headers: data.headers,
+                }
+            }
+        }
+        const linkExists = Cache.findOne({
+            uri: data.link
+        })
+        .then(linkExists => {
+            return linkExists || Cache.create(link)
+        });
+    }
+}
 
 module.exports = resolveLinks;
