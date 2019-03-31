@@ -5,24 +5,28 @@ const {timeout} = require('../../utils');
 const logger = require('../../utils/logger');
 
 async function Vidoza(uri, jar, {'user-agent': userAgent}) {
-    let videoPageHtml = '';
-    let attempt = 0;
-    while(attempt < 5 && !videoPageHtml) {
-        try {
-            logger.debug(attempt, uri);
-            videoPageHtml = await rp({
-                uri,
-                timeout: 5000
-            });
-            logger.debug('success', uri);
-        } catch (err) {
-            logger.error('fail', uri);
-            await timeout(3000);
-            attempt++;
+    try {
+        let videoPageHtml = '';
+        let attempt = 0;
+        while(attempt < 5 && !videoPageHtml) {
+            try {
+                logger.debug(attempt, uri);
+                videoPageHtml = await rp({
+                    uri,
+                    timeout: 5000
+                });
+                logger.debug('success', uri);
+            } catch (err) {
+                logger.error('fail', uri);
+                await timeout(3000);
+                attempt++;
+            }
         }
+    
+        return VidozaHtml(videoPageHtml);
+    } catch (err) {
+        logger.error(err)
     }
-
-    return VidozaHtml(videoPageHtml);
 }
 
 function VidozaHtml(videoPageHtml) {

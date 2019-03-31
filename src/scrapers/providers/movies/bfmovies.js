@@ -13,16 +13,16 @@ module.exports = class bfmovies extends BaseProvider {
         const year = req.query.year;
         const resolvePromises = [];
         let headers = {};
-    
+
         try {
             const searchTitle = `${title} (${year})`;
             let searchUrl = (`${url}/search?q=${searchTitle.replace(/ /g, '+')}`);
             const rp = this._getRequest(req, ws);
             const jar = rp.jar();
             const response = await this._createRequest(rp, searchUrl, jar, headers);
-            
+
             let $ = cheerio.load(response);
-            
+
             let videoPage = '';
             $(`li[itemtype="http://schema.org/Movie"]`).toArray().forEach(element => {
                 let linkElement = $(element).find("a");
@@ -42,7 +42,7 @@ module.exports = class bfmovies extends BaseProvider {
             const videoPageHTML = await this._createRequest(rp, videoPage, jar, headers);
 
             $ = cheerio.load(videoPageHTML);
-            
+
             let openloadPage = $("iframe").attr('src');
             if(!openloadPage.includes("openload")){
                 this.logger.debug("BFMovies does not always use OpenLoad.");

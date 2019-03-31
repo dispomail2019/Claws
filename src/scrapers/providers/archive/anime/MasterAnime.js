@@ -1,4 +1,4 @@
-const BaseProvider = require('../BaseProvider');
+const BaseProvider = require('../../BaseProvider');
 const cheerio = require('cheerio');
 
 module.exports = class MasterAnime extends BaseProvider {
@@ -8,7 +8,7 @@ module.exports = class MasterAnime extends BaseProvider {
     }
 
     /** @inheritdoc */
-    async scrape(url, req, sse) {
+    async scrape(url, req, ws) {
         const title = req.query.title;
         const season = req.query.season;
         const episode = req.query.episode;
@@ -22,7 +22,7 @@ module.exports = class MasterAnime extends BaseProvider {
                 sb: 'true'
             });
 
-            const rp = this._getRequest(req, sse);
+            const rp = this._getRequest(req, ws);
             let response = await this._createRequest(rp, searchUrl);
             let animes = JSON.parse(response);
             for (let i = 0; i < animes.length; i++) {
@@ -36,7 +36,7 @@ module.exports = class MasterAnime extends BaseProvider {
                         if (currentEpisode['info']['episode'] === episode + '') {
                             let seriesHtml = await this._createRequest(rp, `${url}/anime/watch/${anime['slug']}/${currentEpisode['info']['episode']}`);
                             this._scrapeMirrors(seriesHtml, (link, quality) => {
-                                resolvePromises.push(this.resolveLink(link, sse, null, null, quality));
+                                resolvePromises.push(this.resolveLink(link, ws, null, null, quality));
                             });
                         }
                     }

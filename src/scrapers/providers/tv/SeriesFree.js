@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const randomUseragent = require('random-useragent');
 const BaseProvider = require('../BaseProvider');
 
-module.exports = class extends BaseProvider {
+module.exports = class SeriesFree extends BaseProvider {
     /** @inheritdoc */
     getUrls() {
         return ['https://seriesfree.to'];

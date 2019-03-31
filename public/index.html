@@ -1,410 +1,536 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-        <title>Alpha | Claws</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-        <style>
-            html, body {
-                margin: 0;
-                padding: 0;
+    <title>Alpha | Claws</title>
 
-                font-family: "Roboto", sans-serif;
-                background-color: #2a2d32;
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
 
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }
+            font-family: "Roboto", sans-serif;
+            background-color: #2a2d32;
 
-            input, button {
-                font-family: "Roboto", sans-serif;
-            }
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-            .material-button-raised {
-                position: relative;
-                display: inline-block;
-                box-sizing: border-box;
-                margin: 0 8px;
-                border: none;
-                border-radius: 2px;
-                padding: 0 16px;
-                min-width: 64px;
-                height: 36px;
-                vertical-align: middle;
-                text-align: center;
-                text-overflow: ellipsis;
-                text-transform: uppercase;
-                color: #fff;
-                background-color: #388E3C;
-                box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-                font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
-                font-size: 14px;
-                font-weight: 500;
-                line-height: 36px;
-                overflow: hidden;
-                outline: none;
-                cursor: pointer;
-                transition: box-shadow 0.2s;
-            }
+        input,
+        button {
+            font-family: "Roboto", sans-serif;
+        }
 
-            .material-button-raised:hover,
-            .material-button-raised:focus {
-                box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-            }
+        label {
+            color: white;
+        }
 
-            .material-button-raised:active {
-                box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-            }
+        .material-button-raised {
+            position: relative;
+            display: inline-block;
+            box-sizing: border-box;
+            margin: 0 8px;
+            border: none;
+            border-radius: 2px;
+            padding: 0 16px;
+            min-width: 64px;
+            height: 36px;
+            vertical-align: middle;
+            text-align: center;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #388E3C;
+            box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+            font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 36px;
+            overflow: hidden;
+            outline: none;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
 
-            .material-button-raised:disabled {
-                color: rgba(0, 0, 0, 0.38);
-                background-color: rgba(0, 0, 0, 0.12);
-                box-shadow: none;
-                cursor: initial;
-            }
+        .material-button-raised:hover,
+        .material-button-raised:focus {
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+        }
 
-            .material-button-raised::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                background-color: currentColor;
-                opacity: 0;
-                transition: opacity 0.2s;
-            }
+        .material-button-raised:active {
+            box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+        }
 
-            .material-button-raised:hover::before {
-                opacity: 0.12;
-            }
+        .material-button-raised:disabled {
+            color: rgba(0, 0, 0, 0.38);
+            background-color: rgba(0, 0, 0, 0.12);
+            box-shadow: none;
+            cursor: initial;
+        }
 
-            .material-button-raised:focus::before {
-                opacity: 0.2;
-            }
+        .material-button-raised::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: currentColor;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
 
-            .material-button-raised:active::before {
-                opacity: 0.32;
-            }
+        .material-button-raised:hover::before {
+            opacity: 0.12;
+        }
 
-            .material-button-raised:disabled::before {
-                opacity: 0;
-            }
+        .material-button-raised:focus::before {
+            opacity: 0.2;
+        }
 
-            .material-button-raised::after {
-                content: "";
-                position: absolute;
-                left: 50%;
-                top: 18px;
-                border-radius: 50%;
-                padding: 50%;
-                width: 32px;
-                height: 32px;
-                background-color: currentColor;
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1) ;
-                transition: opacity 1s, transform 0.5s;
-            }
+        .material-button-raised:active::before {
+            opacity: 0.32;
+        }
 
-            .material-button-raised:active::after {
-                opacity: 0.4;
-                transform: translate(-50%, -50%) scale(0);
-                transition: transform 0s;
-            }
+        .material-button-raised:disabled::before {
+            opacity: 0;
+        }
 
-            .material-button-raised:disabled::after {
-                opacity: 0;
-            }
+        .material-button-raised::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 18px;
+            border-radius: 50%;
+            padding: 50%;
+            width: 32px;
+            height: 32px;
+            background-color: currentColor;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1);
+            transition: opacity 1s, transform 0.5s;
+        }
 
-            .searchFilter {
-                color: white;
-            }
+        .material-button-raised:active::after {
+            opacity: 0.4;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0s;
+        }
 
-            .searchBox {
-                text-align: center;
-                /*width: 100%;
+        .material-button-raised:disabled::after {
+            opacity: 0;
+        }
+
+        .searchFilter {
+            color: white;
+        }
+
+        .searchBox {
+            text-align: center;
+            /*width: 100%;
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 -webkit-transform: translate(-50%, -50%);
                 transform: translate(-50%, -50%);
                 overflow: hidden;*/
+            margin: 15px;
+        }
 
-                margin: 15px;
+        .searchBox input[type="text"] {
+            display: inline-block;
+            position: relative;
+            font-size: 36pt;
+            padding: 6pt;
+            background: none;
+            outline: none;
+            border: none;
+            color: white;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+            transition: border 0.2s ease-in-out;
+        }
+
+        .searchBox input[type="text"]:focus {
+            border-bottom-color: white;
+        }
+
+        .searchBox input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        button.primary {
+            background-color: #7289DA;
+        }
+
+        button.red {
+            background-color: #23272A;
+        }
+
+        .search-results-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, max-content));
+            grid-auto-rows: 225px;
+            grid-gap: 5px;
+        }
+
+        .search-result {
+            width: 100%;
+            height: 100%;
+            max-width: 162px;
+            display: flex;
+            align-items: flex-end;
+            cursor: pointer;
+        }
+
+        .search-result>.search-result-title-container {
+            height: 52px;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-result-title {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .search-result {
+            width: 100%;
+            height: 100%;
+            max-width: 162px;
+            display: flex;
+            align-items: flex-end;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .search-result.no-image {
+            background-color: #696969;
+            /* tee hee*/
+        }
+
+        .search-result.no-image:before {
+            content: "NO IMAGE";
+            position: absolute;
+            top: 77px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            color: #c7c5c5;
+        }
+    </style>
+</head>
+
+<body>
+    <noscript>
+        <strong>This will not work without JavaScript. Please enable it to continue.</strong>
+    </noscript>
+
+    <div class="searchBox">
+        <input id="searchText" type="text" placeholder="Search for something..." />
+        <br>
+        <br>
+        <br>
+        <button type="button" class="material-button-raised primary" onclick="search()">Search</button>
+        <button id="stop" type="button" class="material-button-raised red" disabled onclick="stop()">Stop Scraping</button>
+        <label for="isAnime">Is Anime
+            <input id="isAnime" type="checkbox">
+        </label>
+    </div>
+    <div id="results" class="search-results-list"></div>
+    <script type="text/javascript" charset="utf-8" src="salsa20.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        // Provided by the .env file.
+        const TMDB_API_KEY = '<%= tmdb_api_key %>';
+        const SECRET_CLIENT_ID = '<%= secret_client_id %>';
+
+        let ws;
+        let results = [];
+        let scrapes = 0;
+        let resultsCount = 0;
+        let resultTable = [];
+        let resultCountObject = { providers: {}, resolvers: {} };
+        let aggregatedDebugInfo = [];
+
+        document.getElementById('searchText').onkeydown = searchByEnter;
+        function updateresultCountObject(obj, provider, resolver) {
+            if (!obj.providers[provider]) {
+                obj.providers[provider] = 0;
             }
+            obj.providers[provider] += 1;
 
-            .searchBox input[type="text"]{
-                display: inline-block;
-                position: relative;
-                font-size: 36pt;
-                padding: 6pt;
-                background: none;
-                outline: none;
-                border: none;
-                color: white;
-                border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-                transition: border 0.2s ease-in-out;
+            if (!obj.resolvers[resolver]) {
+                obj.resolvers[resolver] = 0;
             }
+            obj.resolvers[resolver] += 1;
 
-            .searchBox input[type="text"]:focus {
-                border-bottom-color: white;
-            }
+            return obj;
+        }
 
-            .searchBox input[type="text"]::placeholder {
-                color: rgba(255, 255, 255, 0.4);
-            }
-
-            button.primary {
-                background-color: #7289DA;
-            }
-
-            button.red {
-                background-color: #23272A;
-            }
-
-            .search-results-list {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(130px, max-content));
-                grid-auto-rows: 225px;
-                grid-gap: 5px;
-            }
-
-            .search-result {
-                width: 100%;
-                height: 100%;
-                max-width: 162px;
-                display: flex;
-                align-items: flex-end;
-                cursor: pointer;
-            }
-
-            .search-result > .search-result-title-container {
-                height: 52px;
-                padding: 5px;
-                background: rgba(0, 0, 0, 0.7);
-                width: 100%;
-                display: flex;
-                align-items: center;
-            }
-
-            .search-result-title {
-                color: #fff;
-                font-size: 14px;
-                font-weight: 500;
-            }
-        </style>
-    </head>
-    <body>
-        <noscript>
-            <strong>This will not work without JavaScript. Please enable it to continue.</strong>
-        </noscript>
-
-        <div class="searchBox">
-            <input id="searchText" type="text" placeholder="Enter a movie..." />
-            <br><br><br>
-            <button type="button" class="material-button-raised primary" onclick="search()">Search</button>
-            <button id="stop" type="button" class="material-button-raised red" disabled onclick="stop()">Stop Scraping</button>
-            <label for="isAnime">Is Anime<input id="isAnime" type="checkbox"></label>
-        </div>
-        <div id="results" class="search-results-list"></div>
-        <script type="text/javascript" charset="utf-8" src="salsa20.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            // Provided by the .env file.
-            const TMDB_API_KEY = '<%= tmdb_api_key %>';
-            const SECRET_CLIENT_ID = '<%= secret_client_id %>';
-
-            let ws;
-            let results = [];
-
-            document.getElementById('searchText').onkeydown = searchByEnter;
-
-            async function authenticate() {
-                let token = localStorage.getItem('token');
-                if (token) {
-                    const decodedToken = jwtDecode(token);
-                    const {exp} = decodedToken;
-                    if ((new Date()).valueOf() < exp * 1000) {
-                        return token;
-                    }
-                }
-
-                const bytesToHex = (uint) => uint.reduce((memo, i) => memo + ('0' + i.toString(16)).slice(-2), '');
-
-                const encoder = new TextEncoder();
-                const decoder = new TextDecoder();
-
-                const keyBytes = encoder.encode(SECRET_CLIENT_ID.substring(0, 32));
-                const ivBytes = crypto.getRandomValues(new Uint8Array(8));
-
-                const messageBytes = encoder.encode(`${Math.floor((new Date()).valueOf() / 1000)}|${SECRET_CLIENT_ID}`);
-
-                const encrypter = new Salsa20(keyBytes, ivBytes);
-                const encryptedMessageBytes = encrypter.encrypt(messageBytes);
-
-                const ivString = bytesToHex(ivBytes);
-                const encryptedString = bytesToHex(encryptedMessageBytes);
-
-                const response = await fetch('/api/v1/login', {
-                    method: 'POST',
-                    body: JSON.stringify({clientID: `${ivString}|${encryptedString}`}),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include'
-                });
-                const responseJSON = await response.json();
-                token = responseJSON.token;
-                if (responseJSON.auth) {
-                    localStorage.setItem('token', token);
-                }
-
-                return token;
-            }
-
-            async function scrapeMovies(searchData) {
-                let token = await authenticate();
-                stop(); // Stop existing eventsource.
-                ws = new WebSocket(`ws://localhost:3000/?token=${token}`);
-                ws.onopen = function() {
-                    // Web Socket is connected, send data using send()
-                    ws.send(JSON.stringify({type: 'movies', title: searchData.title, year: (new Date(searchData.release_date)).getFullYear()}));
-                    document.getElementById('stop').disabled = false;
-                };
-
-                ws.onmessage = function (e) {
-                    try {
-                        const data = JSON.parse(e.data)
-                        console.log(data);
-                        if (data.event === 'done') {
-                            console.log('There should be no more events after this one. Comment out the `close` line to see if there are any events leaking.');
-                            // ws.close()
-                        }
-                    } catch (err) {
-                        console.error(e.data);
-                    }
-                };
-
-                ws.onclose = function() {
-                    // websocket is closed.
-                    document.getElementById('stop').disabled = true;
-                    alert("Connection is closed...");
-                };
-            }
-            async function scrapeTV(searchData) {
-                let token = await authenticate();
-                stop(); // Stop existing eventsource.
-                ws = new WebSocket(`ws://localhost:3000/?token=${token}`);
-                let isAnime = document.getElementById('isAnime').checked;
-                ws.onopen = function() {
-                    // Web Socket is connected, send data using send()
-                    const season = Number(window.prompt('Type a number for the season', ''));
-                    const episode = Number(window.prompt('Type a number for the episode', ''));
-                    if (season && episode) {
-                        ws.send(JSON.stringify({type: isAnime ? 'anime' : 'tv', title: searchData.name, year: (new Date(searchData.first_air_date)).getFullYear(), season, episode}));
-                        document.getElementById('stop').disabled = false;
-                    } else {
-                        stop();
-                    }
-                };
-
-                ws.onmessage = function (e) {
-                    try {
-                        const data = JSON.parse(e.data)
-                        console.log(data);
-                        if (data.event === 'done') {
-                            console.log('There should be no more events after this one. Comment out the `close` line to see if there are any events leaking.');
-                            // ws.close()
-                        }
-                    } catch (err) {
-                        console.error(e.data);
-                    }
-                };
-
-                ws.onclose = function() {
-                    // websocket is closed.
-                    document.getElementById('stop').disabled = true;
-                    alert("Connection is closed...");
-                };
-            }
-            function stop() {
-                ws && ws.close();
-                document.getElementById('stop').disabled = true;
-            }
-            function searchByEnter(e) {
-                if (e.which == 13 || e.keyCode == 13) {
-                    search();
+        async function authenticate() {
+            let token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                const { exp } = decodedToken;
+                if ((new Date()).valueOf() < exp * 1000) {
+                    return token;
                 }
             }
-            async function search() {
-                document.getElementById('results').innerHTML = '';
-                const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=en-US&query=${document.getElementById('searchText').value}&page=1&include_adult=false`)
-                const responseJSON = await response.json();
-                results = responseJSON.results;
-                for(let result of results) {
-                    const resultContainer = document.createElement('div');
-                    resultContainer.style.background = `url('https://image.tmdb.org/t/p/w200${result.poster_path}') center / cover`;
-                    resultContainer.classList.add('search-result');
-                    const titleContainer = document.createElement('div');
-                    titleContainer.classList.add('search-result-title-container');
-                    const title = document.createElement('span');
-                    title.classList.add('search-result-title');
-                    title.innerText = `${result.title || result.name}${result.release_date ? ` (${(new Date(result.release_date)).getFullYear()})` : ''}`;
 
-                    titleContainer.appendChild(title);
-                    resultContainer.appendChild(titleContainer);
-                    if (result.media_type === 'movie') {
-                        resultContainer.onclick = () => scrapeMovies(result);
-                    } else if (result.media_type === 'tv') {
-                        resultContainer.onclick = () => scrapeTV(result);
-                    }
-                    document.getElementById('results').appendChild(resultContainer);
-                }
-            }
-            function b64DecodeUnicode(str) {
-                return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
-                    var code = p.charCodeAt(0).toString(16).toUpperCase();
-                    if (code.length < 2) {
-                      code = '0' + code;
-                    }
-                  return '%' + code;
-              }));
+            const bytesToHex = (uint) => uint.reduce((memo, i) => memo + ('0' + i.toString(16)).slice(-2), '');
+
+            const encoder = new TextEncoder();
+            const decoder = new TextDecoder();
+
+            const keyBytes = encoder.encode(SECRET_CLIENT_ID.substring(0, 32));
+            const ivBytes = crypto.getRandomValues(new Uint8Array(8));
+
+            const messageBytes = encoder.encode(`${Math.floor((new Date()).valueOf() / 1000)}|${SECRET_CLIENT_ID}`);
+
+            const encrypter = new Salsa20(keyBytes, ivBytes);
+            const encryptedMessageBytes = encrypter.encrypt(messageBytes);
+
+            const ivString = bytesToHex(ivBytes);
+            const encryptedString = bytesToHex(encryptedMessageBytes);
+
+            const response = await fetch('/api/v1/login', {
+                method: 'POST',
+                body: JSON.stringify({ clientID: `${ivString}|${encryptedString}` }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+            const responseJSON = await response.json();
+            token = responseJSON.token;
+            if (responseJSON.auth) {
+                localStorage.setItem('token', token);
             }
 
-            function base64_url_decode(str) {
-                var output = str.replace(/-/g, "+").replace(/_/g, "/");
-                switch (output.length % 4) {
-                    case 0:
-                        break;
-                    case 2:
-                        output += "==";
-                        break;
-                    case 3:
-                        output += "=";
-                        break;
-                    default:
-                        throw "Illegal base64url string!";
-                }
+            return token;
+        }
+        let debugData;
+        async function scrapeMovies(searchData) {
+            let token = await authenticate();
+            stop(); // Stop existing websocket.
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${searchData.id}/external_ids?api_key=${TMDB_API_KEY}`);
+            const responseJSON = await response.json();
+            ws = new WebSocket(`ws://localhost:3000/?token=${token}`);
+            ws.onopen = function () {
+                // Web Socket is connected, send data using send()
+                ws.send(JSON.stringify({ type: 'movies', title: searchData.title, year: (new Date(searchData.release_date)).getFullYear(), tmdbId: searchData.id, imdbId: responseJSON.imdb_id }));
+                document.getElementById('stop').disabled = false;
+            };
+            debugData = searchData;
 
+            ws.onmessage = function (e) {
                 try {
-                    return b64DecodeUnicode(output);
+                    let provider, resolver;
+                    const data = JSON.parse(e.data);
+                    console.log(data);
+                    if (data.event === 'scrape') {
+                        provider = data.provider;
+                        resolver = data.resolver;
+                        scrapes = scrapes + 1;
+                    }
+                    if (data.event === 'result') {
+                        resolver = data.metadata.source;
+                        provider = data.metadata.provider;
+                        resultsCount = resultsCount + 1;
+
+                    }
+                    if (data.event === 'scrape' || data.event === 'result') {
+                        resultCountObject = updateresultCountObject(resultCountObject, provider, resolver);
+                    }
+                    if (data.event === 'done') {
+                        console.log('There should be no more events after this one. Comment out the `close` line to see if there are any events leaking.');
+                        console.log('scrapes: ', scrapes);
+                        console.log('results: ', resultsCount);
+                        resultTable.push({ 'Details': debugData.title, 'Scrape': scrapes, 'Result': resultsCount })
+
+                        console.log('Results per site (this search): ', resultCountObject);
+                        aggregatedDebugInfo.push({
+                            search: debugData.title,
+                            results: { scrape: scrapes, results: resultsCount },
+                            provider: resultCountObject
+                        });
+                        console.log('Results per site (aggregated): ');
+                        console.log(aggregatedDebugInfo);
+                        console.table(resultTable);
+                        resultCountObject = { providers: {}, resolvers: {} };
+                        scrapes = 0;
+                        resultsCount = 0;
+                        // ws.close()
+                    }
                 } catch (err) {
-                    return atob(output);
+                    console.error(e.data);
                 }
+            };
+
+            ws.onclose = function () {
+                // websocket is closed.
+                document.getElementById('stop').disabled = true;
+                alert("Connection is closed...");
+            };
+        }
+        let season, episode;
+        async function scrapeTV(searchData) {
+            let token = await authenticate();
+            stop(); // Stop existing websocket.
+            const response = await fetch(`https://api.themoviedb.org/3/tv/${searchData.id}/external_ids?api_key=${TMDB_API_KEY}`);
+            const responseJSON = await response.json();
+            ws = new WebSocket(`ws://localhost:3000/?token=${token}`);
+            let isAnime = document.getElementById('isAnime').checked;
+            ws.onopen = function () {
+                // Web Socket is connected, send data using send()
+                const season = Number(window.prompt('Type a number for the season', ''));
+                const episode = Number(window.prompt('Type a number for the episode', ''));
+                debugData = { ...searchData, season, episode };
+                if (season && episode) {
+                    ws.send(JSON.stringify({ type: isAnime ? 'anime' : 'tv', title: searchData.name, year: (new Date(searchData.first_air_date)).getFullYear(), season, episode, tmdbId: searchData.id, imdbId: responseJSON.imdb_id }));
+                    document.getElementById('stop').disabled = false;
+                } else {
+                    stop();
+                } ws.onmessage = function (e) {
+                    try {
+                        let provider, resolver;
+                        const data = JSON.parse(e.data);
+                        console.log(data);
+                        if (data.event === 'scrape') {
+                            provider = data.provider;
+                            resolver = data.resolver;
+                            scrapes = scrapes + 1;
+                        }
+                        if (data.event === 'result') {
+                            resultsCount = resultsCount + 1;
+                            resolver = data.metadata.source;
+                            provider = data.metadata.provider;
+                        }
+                        if (data.event === 'scrape' || data.event === 'result') {
+                            resultCountObject = updateresultCountObject(resultCountObject, provider, resolver);
+                        }
+                        if (data.event === 'done') {
+                            console.log('There should be no more events after this one. Comment out the `close` line to see if there are any events leaking.');
+                            // ws.close()
+                            console.log('scrapes: ', scrapes);
+                            console.log('results: ', resultsCount);
+                            resultTable.push({ 'Details': `${debugData.name}, S${debugData.season}E${debugData.episode}`, 'Scrape': scrapes, 'Result': resultsCount })
+                            console.log('Results per site (this search): ', resultCountObject);
+                            aggregatedDebugInfo.push({
+                                search: `${debugData.name}, S${debugData.season}E${debugData.episode}`,
+                                results: { scrape: scrapes, results: resultsCount },
+                                provider: resultCountObject
+                            });
+                            scrapes = 0;
+                            resultsCount = 0;
+                            console.log('Results per site (aggregated): ');
+                            console.log(aggregatedDebugInfo);
+                            console.table(resultTable);
+                            resultCountObject = { providers: {}, resolvers: {} };
+                        }
+                    } catch (err) {
+                        console.error(e.data);
+                    }
+                };
+
+                ws.onclose = function () {
+                    // websocket is closed.
+                    document.getElementById('stop').disabled = true;
+                    alert("Connection is closed...");
+                };
+            }
+        }
+        function stop() {
+            ws && ws.close();
+            document.getElementById('stop').disabled = true;
+        }
+        function searchByEnter(e) {
+            if (e.which == 13 || e.keyCode == 13) {
+                search();
+            }
+        }
+        async function search() {
+            scrapes = 0;
+            resultsCount = 0;
+            resultCountObject = { providers: {}, resolvers: {} };
+            document.getElementById('results').innerHTML = '';
+            const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=en-US&query=${document.getElementById('searchText').value}&page=1&include_adult=false`)
+            const responseJSON = await response.json();
+            results = responseJSON.results;
+            for (let result of results) {
+                const resultContainer = document.createElement('div');
+                resultContainer.classList.add('search-result');
+                if (result.poster_path) {
+                    resultContainer.style.background = `url('https://image.tmdb.org/t/p/w200${result.poster_path}') center / cover`;
+                } else {
+                    resultContainer.classList.add('no-image');
+                }
+                const titleContainer = document.createElement('div');
+                titleContainer.classList.add('search-result-title-container');
+                const title = document.createElement('span');
+                title.classList.add('search-result-title');
+                title.innerText = `${result.title || result.name}${result.release_date ? ` (${(new Date(result.release_date)).getFullYear()})` : ''}`;
+                titleContainer.appendChild(title);
+                resultContainer.appendChild(titleContainer);
+                if (result.media_type === 'movie') {
+                    resultContainer.onclick = () => scrapeMovies(result);
+                } else if (result.media_type === 'tv') {
+                    resultContainer.onclick = () => scrapeTV(result);
+                }
+                document.getElementById('results').appendChild(resultContainer);
+            }
+        }
+        function b64DecodeUnicode(str) {
+            return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
+                var code = p.charCodeAt(0).toString(16).toUpperCase();
+                if (code.length < 2) {
+                    code = '0' + code;
+                }
+                return '%' + code;
+            }));
+        }
+
+        function base64_url_decode(str) {
+            var output = str.replace(/-/g, "+").replace(/_/g, "/");
+            switch (output.length % 4) {
+                case 0:
+                    break;
+                case 2:
+                    output += "==";
+                    break;
+                case 3:
+                    output += "=";
+                    break;
+                default:
+                    throw "Illegal base64url string!";
             }
 
-            function jwtDecode(token) {
-                try {
-                    return JSON.parse(base64_url_decode(token.split('.')[1]));
-                } catch (e) {
-                    throw new Error('Invalid token specified: ' + e.message);
-                }
+            try {
+                return b64DecodeUnicode(output);
+            } catch (err) {
+                return atob(output);
             }
-        </script>
-    </body>
+        }
+
+        function jwtDecode(token) {
+            try {
+                return JSON.parse(base64_url_decode(token.split('.')[1]));
+            } catch (e) {
+                throw new Error('Invalid token specified: ' + e.message);
+            }
+        }
+    </script>
+</body>
+
 </html>

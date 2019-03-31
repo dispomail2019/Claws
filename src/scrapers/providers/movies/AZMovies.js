@@ -58,6 +58,7 @@ module.exports = class AZMovies extends BaseProvider {
 
             let documentCookie = /document\.cookie\s*=\s*"(.*)=(.*)";/g.exec(html);
             while (documentCookie) {
+                // TODO this needs work, response variable is undefined.
                 const cookie = new tough.Cookie({
                     key: documentCookie[1],
                     value: documentCookie[2]
@@ -72,7 +73,7 @@ module.exports = class AZMovies extends BaseProvider {
             $ = cheerio.load(videoPageHtml);
 
             $('#serverul li a').toArray().forEach((element) => {
-                const providerUrl = $(element).attr('href');
+                const providerUrl = this._absoluteUrl(movieUrl, $(element).attr('href'));
                 resolvePromises.push(this.resolveLink(providerUrl, ws, jar, headers));
             });
         }

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const readTestAsset = require('../../test-helper').readTestAsset;
-const MasterAnime = require('../../../src/scrapers/providers/anime/MasterAnime');
+const MasterAnime = require('../../../src/scrapers/providers/archive/anime/MasterAnime');
 
 let instance = new MasterAnime();
 

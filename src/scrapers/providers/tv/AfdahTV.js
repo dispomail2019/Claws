@@ -10,7 +10,7 @@ const logger = require('../../../utils/logger')
 const resolve = require('../../resolvers/resolve');
 const {padTvNumber} = require('../../../utils');
 
-async function AfdahTV(req, sse) {
+async function AfdahTV(req, ws) {
     const clientIp = req.client.remoteAddress.replace('::ffff:', '').replace('::1', '');
     const title = req.query.name;
     const season = padTvNumber(req.query.season);
@@ -20,7 +20,7 @@ async function AfdahTV(req, sse) {
     const promises = [];
 
     const rp = RequestPromise.defaults(target => {
-        if (sse.stopExecution) {
+        if (ws.stopExecution) {
             return null;
         }
 
@@ -124,11 +124,11 @@ async function AfdahTV(req, sse) {
                         let decode = tor(Buffer.from(tor(code), 'base64').toString('ascii'));
                         let providerRegex = /(?:src=')(.*)(?:' scrolling)/g.exec(decode);
                         if (providerRegex) {
-                            resolvePromises.push(resolve(sse, providerRegex[1], 'AfdahTV', jar));
+                            resolvePromises.push(resolve(ws, providerRegex[1], 'AfdahTV', jar));
                         } else {
                             decode = Buffer.from(tor(Buffer.from(code, 'base64').toString('ascii')), 'base64').toString('ascii');
                             providerRegex = /(?:src=')(.*)(?:' scrolling)/g.exec(decode);
-                            resolvePromises.push(resolve(sse, providerRegex[1], 'AfdahTV', jar));
+                            resolvePromises.push(resolve(ws, providerRegex[1], 'AfdahTV', jar));
                         }
                     });
             } else {
@@ -148,7 +148,7 @@ async function AfdahTV(req, sse) {
     //                 // await page.screenshot({path: 'AfdahTV.png'});
     //                 const videoSourceUrl = await page.evaluate(() => window.player && window.player.getPlaylist()[0].file);
     //                 console.log(videoSourceUrl);
-    //                 sse.send({videoSourceUrl, url, provider}, 'result');
+    //                 await ws.send({videoSourceUrl, url, provider}, 'result');
     //             }
     //
     //             sourceIds.filter(sourceId => !sourceId.startsWith('/trailer')).forEach(sourceId => {
@@ -156,8 +156,8 @@ async function AfdahTV(req, sse) {
     //             });
             }
         } catch (err) {
-            if (!sse.stopExecution) {
-                logger.error({source: 'AfdahTV', sourceUrl: url, query: {title: req.query.name, season: req.query.season, episode: req.query.episode}, error: (err.message || err.toString()).substring(0, 100) + '...'});
+            if (!ws.stopExecution) {
+                logger.error({provider: 'AfdahTV', providerUrl: url, query: {title: req.query.name, season: req.query.season, episode: req.query.episode}, error: (err.message || err.toString()).substring(0, 100) + '...'});
             }
         }
 

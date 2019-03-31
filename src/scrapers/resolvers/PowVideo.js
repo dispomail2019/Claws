@@ -4,22 +4,27 @@ const cheerio = require('cheerio');
 const vm = require('vm');
 const URL = require('url');
 const m3u8 = require('m3u8-stream-list');
+const logger = require('../../utils/logger');
 
 async function PowVideo(uri, jar, headers, videoId) {
-    const videoSourceHtml = await rp({
-        uri,
-        headers: {
-            ...headers,
-            referer: `https://povwideo.cc/preview-${videoId}-954x562.html`,
-            'cache-control': 'no-cache',
-            'pragma': 'no-cache',
-            'upgrade-insecure-requests': '1',
-        },
-        jar,
-        timeout: 5000
-    });
-
-    return PowVideoHtml(videoSourceHtml, jar, headers);
+    try {
+        const videoSourceHtml = await rp({
+            uri,
+            headers: {
+                ...headers,
+                referer: `https://povwideo.cc/preview-${videoId}-954x562.html`,
+                'cache-control': 'no-cache',
+                'pragma': 'no-cache',
+                'upgrade-insecure-requests': '1',
+            },
+            jar,
+            timeout: 5000
+        });
+    
+        return PowVideoHtml(videoSourceHtml, jar, headers);
+    } catch (err) {
+        logger.error(err)
+    }
 }
 
 async function PowVideoHtml(videoSourceHtml, jar, headers) {

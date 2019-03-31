@@ -1,17 +1,22 @@
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const vm = require('vm');
+const logger = require('../../utils/logger');
 
 async function Openload(uri, jar, headers) {
-    let providerPageHtml = await rp({
-        uri,
-        headers,
-        jar,
-        followAllRedirects: true,
-        timeout: 5000
-    });
-
-    return OpenloadHtml(providerPageHtml);
+    try {
+        let providerPageHtml = await rp({
+            uri,
+            headers,
+            jar,
+            followAllRedirects: true,
+            timeout: 5000
+        });
+    
+        return OpenloadHtml(providerPageHtml);
+    } catch (err) {
+        logger.error(err)
+    }
 }
 
 function OpenloadHtml(providerPageHtml) {
@@ -53,6 +58,7 @@ function OpenloadHtml(providerPageHtml) {
                     }
                 }
             },
+            cc_cc_cc: null,
             window: {
                 $: jQuery,
                 jQuery

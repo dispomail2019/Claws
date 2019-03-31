@@ -1,23 +1,28 @@
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 const vm = require('vm');
+const logger = require('../../utils/logger');
 
 // I think there's some throttling going on, but haven't tested enough to find the time span for a "ban" reset
 
 async function GamoVideo(uri, jar, {'user-agent': userAgent}) {
-    const videoPageHtml = await rp({
-        uri,
-        headers: {
-            'user-agent': userAgent,
-            'Upgrade-Insecure-Requests': 1,
-            Host: 'gamovideo.com'
-        },
-        followAllRedirects: true,
-        jar,
-        timeout: 5000
-    });
-
-    return GamoVideoHtml(videoPageHtml);
+    try {
+        const videoPageHtml = await rp({
+            uri,
+            headers: {
+                'user-agent': userAgent,
+                'Upgrade-Insecure-Requests': 1,
+                Host: 'gamovideo.com'
+            },
+            followAllRedirects: true,
+            jar,
+            timeout: 5000
+        });
+    
+        return GamoVideoHtml(videoPageHtml);
+    } catch (err) {
+        logger.error(err)
+    }
 }
 
 function GamoVideoHtml(videoPageHtml) {

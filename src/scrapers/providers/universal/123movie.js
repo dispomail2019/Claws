@@ -1,7 +1,6 @@
 const cheerio = require('cheerio');
 const randomUseragent = require('random-useragent');
 const BaseProvider = require('../BaseProvider');
-const tough = require('tough-cookie');
 
 module.exports = class _123movie extends BaseProvider {
     /** @inheritdoc */

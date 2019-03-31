@@ -3,14 +3,13 @@
 
 const RequestPromise = require('request-promise');
 const cheerio = require('cheerio');
-const tough = require('tough-cookie');
 const randomUseragent = require('random-useragent');
 const logger = require('../../../utils/logger')
 
 const {timeout} = require('../../../utils');
 const resolve = require('../../resolvers/resolve');
 
-async function GoStream(req, sse) {
+async function GoStream(req, ws) {
     const clientIp = req.client.remoteAddress.replace('::ffff:', '').replace('::1', '');
     const movieTitle = req.query.title;
 
@@ -19,7 +18,7 @@ async function GoStream(req, sse) {
     const promises = [];
 
     const rp = RequestPromise.defaults(target => {
-        if (sse.stopExecution) {
+        if (ws.stopExecution) {
             return null;
         }
 

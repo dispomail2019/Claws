@@ -6,7 +6,7 @@ const tough = require('tough-cookie');
 module.exports = class ODB extends BaseProvider {
     /** @inheritdoc */
     getUrls() {
-        return [" https://api.odb.to"];
+        return ["https://api.odb.to"];
     }
 
     /** @inheritdoc */

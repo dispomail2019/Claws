@@ -1,17 +1,22 @@
 const rp = require('request-promise');
 const cheerio = require('cheerio');
+const logger = require('../../utils/logger');
 
 async function VShare(uri, jar, {'user-agent': userAgent}) {
-    const videoSourceHtml = await rp({
-        uri,
-        headers: {
-            'user-agent': userAgent
-        },
-        jar,
-        timeout: 5000
-    });
-
-    return VShareHtml(videoSourceHtml);
+    try {
+        const videoSourceHtml = await rp({
+            uri,
+            headers: {
+                'user-agent': userAgent
+            },
+            jar,
+            timeout: 5000
+        });
+    
+        return VShareHtml(videoSourceHtml);
+    } catch (err) {
+        logger.error(err);
+    }
 }
 
 function VShareHtml(videoSourceHtml) {

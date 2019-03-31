@@ -5,7 +5,7 @@ const logger = require('../../../utils/logger')
 
 const resolve = require('../../resolvers/resolve');
 
-async function _5movies(req, sse){
+async function _5movies(req, ws){
     logger.debug("5movies NOTICE: This primitively removes the year from the end of the title. If this source breaks, did you change the title parameter?");
     let showTitle = req.query.title || req.query.name;
     showTitle = showTitle.substr(0, showTitle.length - 7);
@@ -17,7 +17,7 @@ async function _5movies(req, sse){
     const promises = [];
 
     const rp = RequestPromise.defaults(target => {
-        if (sse.stopExecution) {
+        if (ws.stopExecution) {
             return null;
         }
 
@@ -89,9 +89,9 @@ async function _5movies(req, sse){
         console.log(rapidVideoURL);
 
         const jar = rp.jar();
-        return Promise.all([resolve(sse, rapidVideoURL, '123Movie', jar, {})]);*/
+        return Promise.all([resolve(ws, rapidVideoURL, '123Movie', jar, {})]);*/
         const jar = rp.jar();
-        return Promise.all([resolve(sse, enterVideoURL, '5movies', jar, {})]);
+        return Promise.all([resolve(ws, enterVideoURL, '5movies', jar, {})]);
     }
 
     urls.forEach((url) => {

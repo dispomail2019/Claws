@@ -1,14 +1,13 @@
 const Promise = require('bluebird');
 const RequestPromise = require('request-promise');
 const cheerio = require('cheerio');
-const tough = require('tough-cookie');
 const randomUseragent = require('random-useragent');
 const logger = require('../../../utils/logger')
 
 const {escapeRegExp} = require('../../../utils');
 const resolve = require('../../resolvers/resolve');
 
-async function MovieFiles(req, sse) {
+async function MovieFiles(req, ws) {
     const clientIp = req.client.remoteAddress.replace('::ffff:', '').replace('::1', '');
     const movieTitle = req.query.title;
     const year = req.query.year;
@@ -18,7 +17,7 @@ async function MovieFiles(req, sse) {
     const promises = [];
 
     const rp = RequestPromise.defaults(target => {
-        if (sse.stopExecution) {
+        if (ws.stopExecution) {
             return null;
         }
 
@@ -56,12 +55,12 @@ async function MovieFiles(req, sse) {
                     const qualityExp = new RegExp(`${escapeRegExp(modifiedSearchTitle)}\\.${year}\\.[^\\d]*(\\d\\d\\d\\d?p)`);
                     const qualityExec = qualityExp.exec(foundTitle);
                     const quality = qualityExec ? qualityExec[1] : '';
-                    resolvePromises.push(resolve(sse, providerUrl, 'MovieFiles', jar, headers, quality));
+                    resolvePromises.push(resolve(ws, providerUrl, 'MovieFiles', jar, headers, quality));
                 }
             });
         } catch (err) {
-            if (!sse.stopExecution) {
-                logger.error({source: 'MovieFiles', sourceUrl: url, query: {title: req.query.title}, error: (err.message || err.toString()).substring(0, 100) + '...'});
+            if (!ws.stopExecution) {
+                logger.error({provider: 'MovieFiles', providerUrl: url, query: {title: req.query.title}, error: (err.message || err.toString()).substring(0, 100) + '...'});
             }
         }
 

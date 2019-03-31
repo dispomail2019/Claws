@@ -2,6 +2,7 @@ const rp = require('request-promise');
 const URL = require('url');
 const cheerio = require('cheerio');
 const vm = require('vm');
+const logger = require('../../utils/logger');
 
 const qualityByItag = {
   "5": "240",
@@ -67,14 +68,18 @@ const qualityByItag = {
 }
 
 async function GoogleDrive(uri, jar, headers) {
-    let streamPageHtml = await rp({
-        uri,
-        headers,
-        jar,
-        timeout: 5000,
-    });
-
-    return GoogleDriveHtml(streamPageHtml);
+    try {
+        let streamPageHtml = await rp({
+            uri,
+            headers,
+            jar,
+            timeout: 5000,
+        });
+    
+        return GoogleDriveHtml(streamPageHtml);
+    } catch (err) {
+        logger.error(err)
+    }
 }
 
 

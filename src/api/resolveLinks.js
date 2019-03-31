@@ -1,16 +1,17 @@
 'use strict';
 
 // Load providers
-const providers = require('../scrapers/providers');
+const { providers } = require('../scrapers/providers');
+const { queue } = require('../utils/queue');
+const RequestPromise = require('request-promise');
+
 const logger = require('../utils/logger');
-const db = require('../db/db');
-const Cache = require('../db/models/cache');
-const BaseProvider = require('../scrapers/providers/BaseProvider');
+const WsWrapper = require('../utils/WsWrapper');
 
 /**
  * Sends the current time in milliseconds.
  */
-const sendInitialStatus = (sse) => sse.send({ data: [`${new Date().getTime()}`], event: 'status'}, 'result');
+const sendInitialStatus = (ws) => ws.send(JSON.stringify({ data: [`${new Date().getTime()}`], event: 'status' }));
 
 /**
  * Return request handler for certain media types.
@@ -19,52 +20,43 @@ const sendInitialStatus = (sse) => sse.send({ data: [`${new Date().getTime()}`],
  * @param req request
  * @return {Function}
  */
-const resolveLinks = async (searchData, ws, req) => {
-    const type = searchData.type;
-    const sse = {
-        send: (resultData) => {
-            saveToCache(req, resultData);
-            try {
-                ws.send(JSON.stringify(resultData));
-            } catch (err) {
-                console.log("WS client disconnected, can't send data");
-            }
-        },
-        stopExecution: false
-    };
- 
-    sendInitialStatus(sse);
+const resolveLinks = async (data, ws, req) => {
+    const type = data.type;
+
+    sendInitialStatus(ws);
+
+    const wsWrapper = new WsWrapper(ws, data.options);
 
     ws.on('close', () => {
-        sse.stopExecution = true;
+        wsWrapper.stopExecution = true;
     });
 
     const promises = [];
 
-    req.query = searchData;
+    req.query = data;
 
     // Get available providers.
     let availableProviders = [...providers[type], ...providers.universal];
 
-    // Add anime providers if Anime tag sent from client. 
-    // TODO: Add and send this tag from the client
-    if (type === 'anime') {
-        availableProviders.push([...providers.anime]);
+    availableProviders.forEach((provider) => promises.push(provider.resolveRequests(req, wsWrapper)));
+
+    if (queue.isEnabled) {
+        queue.process()
     }
 
-    availableProviders.forEach((provider) => {
-            return promises.push(provider.resolveRequests(req, sse));
-    });
-
     await Promise.all(promises);
+    if (ws.isAlive) {
+        logger.debug('Scraping complete: sending `Done` event');
+        ws.send(JSON.stringify({ event: 'done' }));
+    } else {
+        logger.debug('Scraping complete: `Done` event ready, but websocket is dead.');
+    }
+}
 
-    sse.send({event: 'done'}, 'done');
-};
-
-const saveToCache = async(req, data) => {
+const saveToCache = async (req, data) => {
     if (data) {
         let link;
-        if (data.event === 'scrape'){
+        if (data.event === 'scrape') {
             link = {
                 uri: data.target,
                 type: req.query.type,
@@ -93,9 +85,9 @@ const saveToCache = async(req, data) => {
         const linkExists = Cache.findOne({
             uri: data.link
         })
-        .then(linkExists => {
-            return linkExists || Cache.create(link)
-        });
+            .then(linkExists => {
+                return linkExists || Cache.create(link)
+            });
     }
 }
 

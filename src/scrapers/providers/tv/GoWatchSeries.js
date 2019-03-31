@@ -4,7 +4,7 @@ const randomUseragent = require('random-useragent');
 const { padTvNumber } = require('../../../utils');
 const BaseProvider = require('../BaseProvider');
 
-module.exports = class SwatchSeries extends BaseProvider {
+module.exports = class GoWatchSeries extends BaseProvider {
     /** @inheritdoc */
     getUrls() {
         return ['https://gowatchseries.co'];
@@ -84,7 +84,7 @@ module.exports = class SwatchSeries extends BaseProvider {
                 };
                 resolvePromises.push(this.resolveLink(link, ws, jar, headers));
             });
-            
+
         } catch (err) {
             this._onErrorOccurred(err);
         }
