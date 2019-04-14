@@ -50,7 +50,7 @@ class WsWrapper {
     }
 
     async setHeadInfo(resultData) {
-        if (resultData.event === 'result') {
+        if (resultData.isResultOfScrape != true) {
             const jar = this.rp.jar();
             const headers = resultData.headers || {};
 
